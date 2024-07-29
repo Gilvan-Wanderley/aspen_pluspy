@@ -23,7 +23,7 @@ class EcoIndicator99:
  
     def steam(self, LCI: float) -> float:
         '''
-        vapor: vapor (kg/year)
+        LCI: vapor (kg/year)
         return: EI99 (-)
         '''
         EI99 = 0
@@ -37,7 +37,7 @@ class EcoIndicator99:
     
     def electricity(self, LCI: float) -> float:
         '''
-        vapor: vapor (MJ/year)
+        LCI: electricity (MJ/year)
         return: EI99 (-)
         '''
         EI99 = 0
