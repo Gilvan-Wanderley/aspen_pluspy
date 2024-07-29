@@ -8,6 +8,8 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.12"
 numpy = "^2.0.1"
+pywin32 = "^306"
+pandas = "^2.2.2"
 
 
 [build-system]
