@@ -9,6 +9,13 @@ class EnergyCost:
         "Electricity": 16.67
     } # $/GJ
     
+    heat = {
+        "LPS": 2081.4,
+        "MPS": 1999.0,
+        "HPS": 1639.9,
+        "CW": 62.6033,
+    } # kJ/kg
+
     def heating(Q: float, quality: str) -> float:
         '''
         Q: Heat duty (GJ/h)
