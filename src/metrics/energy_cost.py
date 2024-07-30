@@ -13,7 +13,7 @@ class EnergyCost:
         "LPS": 2081.4,
         "MPS": 1999.0,
         "HPS": 1639.9,
-        "CW": 62.6033,
+        "CW": 41.7274985,
     } # kJ/kg
 
     def heating(Q: float, quality: str) -> float:
