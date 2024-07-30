@@ -34,6 +34,9 @@ class AspenSimulation:
         self.aspen.Application.Quit()
         print("Quit simulation.")
 
+    def visible(self, value: bool) -> None:
+        self.aspen.Visible = value
+
     def run(self) -> None:
         self.aspen.Engine.Run2()
 
