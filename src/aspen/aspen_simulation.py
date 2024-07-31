@@ -1,6 +1,6 @@
 import win32com.client as win32
 import os
-from utils.aspen_variable import AspenVariable
+from .utils.aspen_variable import AspenVariable
 
 
 class AspenSimulation:

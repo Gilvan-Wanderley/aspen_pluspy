@@ -17,9 +17,9 @@ class EnergyCost:
     } # kJ/kg
 
     enthalpy = {
-        "LPS": 113.9,
-        "MPS": 160.1,
-        "HPS": 316.4
+        "LPS": 2360,
+        "MPS": 2396,
+        "HPS": 2476
     } # kJ/kg
 
     fuel = {
@@ -60,7 +60,7 @@ class EnergyCost:
         return cost/1e3
 
 
-    def co2_emission_fuel(self, Q: float, quality: str, fuel: str) -> float:
+    def co2_emission_fuel(Q: float, quality: str, fuel: str) -> float:
         '''
         Q: Heat duty (kJ/h)
         quality: LPS - MPS - HPS
@@ -74,10 +74,12 @@ class EnergyCost:
 
         NHV = EnergyCost.fuel[fuel]["NHV"]
         C_ = EnergyCost.fuel[fuel]["C%"]
+        dh = EnergyCost.enthalpy[quality]
+        k = EnergyCost.heat[quality]
+        
+        co2 = (Q/NHV)*(C_/100)*(dh/k)*((Tftb - Tamb)/(Tftb - Tstack))*alfa
 
-        co2 = (Q/NHV)*(C_/100)*(EnergyCost.enthalpy[quality]/EnergyCost.heat[quality])*((Tftb - Tamb)/(Tftb - Tstack))
-
-        return co2*alfa
+        return co2
     
     def  co2_emission_elec(E: float) -> float:
         '''
