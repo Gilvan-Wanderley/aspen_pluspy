@@ -60,7 +60,7 @@ class EnergyCost:
         return cost/1e3
 
 
-    def co2_emission(self, Q: float, quality: str, fuel: str) -> float:
+    def co2_emission_fuel(self, Q: float, quality: str, fuel: str) -> float:
         '''
         Q: Heat duty (kJ/h)
         quality: LPS - MPS - HPS
@@ -70,10 +70,19 @@ class EnergyCost:
         Tamb= 298
         Tstack = 433
         Tftb = 2073
+        alfa = 3.67
 
         NHV = EnergyCost.fuel[fuel]["NHV"]
         C_ = EnergyCost.fuel[fuel]["C%"]
 
         co2 = (Q/NHV)*(C_/100)*(EnergyCost.enthalpy[quality]/EnergyCost.heat[quality])*((Tftb - Tamb)/(Tftb - Tstack))
 
-        return co2
+        return co2*alfa
+    
+    def  co2_emission_elec(E: float) -> float:
+        '''
+        E: Electricity (GJ/h)
+        return: CO2 Emission (kg/h)
+        '''
+        factor = 51.1 # kg/GJ
+        return factor*E
