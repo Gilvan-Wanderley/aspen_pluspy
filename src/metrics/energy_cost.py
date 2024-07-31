@@ -16,6 +16,23 @@ class EnergyCost:
         "CW": 41.7274985,
     } # kJ/kg
 
+    enthalpy = {
+        "LPS": 113.9,
+        "MPS": 160.1,
+        "HPS": 316.4
+    } # kJ/kg
+
+    fuel = {
+        "Oil" : {
+            "NHV": 39771,
+            "C%": 86.5
+        },
+        "NG": {
+            "NHV": 51600,
+            "C%": 75.4
+        }
+    }
+
     def heating(Q: float, quality: str) -> float:
         '''
         Q: Heat duty (GJ/h)
@@ -42,3 +59,21 @@ class EnergyCost:
         cost =EnergyCost.price["Electricity"]*Q*8000
         return cost/1e3
 
+
+    def co2_emission(self, Q: float, quality: str, fuel: str) -> float:
+        '''
+        Q: Heat duty (kJ/h)
+        quality: LPS - MPS - HPS
+        comb: Oil, NG
+        return: CO2 Emission (kg/h)
+        '''
+        Tamb= 298
+        Tstack = 433
+        Tftb = 2073
+
+        NHV = EnergyCost.fuel[fuel]["NHV"]
+        C_ = EnergyCost.fuel[fuel]["C%"]
+
+        co2 = (Q/NHV)*(C_/100)*(EnergyCost.enthalpy[quality]/EnergyCost.heat[quality])*((Tftb - Tamb)/(Tftb - Tstack))
+
+        return co2
