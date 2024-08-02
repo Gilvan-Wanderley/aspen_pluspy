@@ -55,6 +55,9 @@ def func(x, y):
     setup(x, y)
 
     # constrains
+    if not simulation.status:
+         return np.inf
+    
     B2_ACN = simulation.get_variable("B2_ACN")
     if B2_ACN < 0.999899 :
          return np.inf
@@ -201,17 +204,17 @@ try:
     simulation = AspenSimulation(simulation_file, variables)
     var = {
          "x":{
-              "RR_LPC": [0.5, 1, 2],
-              "RR_HPC": [0.5, 1.2, 2],
-              "P_LPC": [0.3, 0.5, 1.5],
-              "P_HPC": [2, 3, 4]
+              "RR_LPC": [0.2, 0.50, 1.5],
+              "RR_HPC": [0.2, 0.51, 1.5],
+              "P_LPC":  [0.3, 0.30, 1.5],
+              "P_HPC":  [2, 4, 4]
          },
          "y":{
-              "NT_LPC": [17, 22, 26],
-              "NT_HPC": [16, 22, 25],
-              "NF_F1": [4, 8, 15],
-              "NF_D1": [4, 8, 15],
-              "NF_D2": [4, 8, 14]
+              "NT_LPC": [11, 17, 20],
+              "NT_HPC": [11, 16, 19],
+              "NF_F1": [2, 4, 9],
+              "NF_D1": [2, 4, 9],
+              "NF_D2": [2, 4, 9]
          }
     }
     x0 = np.array([var["x"]["RR_LPC"][1], var["x"]["RR_HPC"][1], var["x"]["P_LPC"][1], var["x"]["P_HPC"][1]])
