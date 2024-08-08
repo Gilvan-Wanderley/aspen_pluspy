@@ -15,10 +15,13 @@ def setup(x, y):
     global count_
     global simulation
 
-    if count_ >= 500:        
-            del simulation
-            simulation = AspenSimulation(simulation_file, variables)
-            count_ = 0
+    if count_ >= 500:
+                  
+          del simulation
+          simulation = AspenSimulation(simulation_file, variables)
+          count_ = 0
+    else:
+          simulation.reinit()
 
     # begin: setup the simulation
     RR_LPC = x[0]
@@ -147,6 +150,9 @@ def func(x, y):
     RR_HPC = simulation.get_variable("RR_HPC")
     D1_ACN = simulation.get_variable("D1_ACN")
     D2_ACN =simulation.get_variable("D2_ACN")
+
+    if complex == type(TAC):
+         return np.inf
     tracking = [NT_LPC, NT_HPC, NF_F1, NF_D1, NF_D2, P_LPC, P_HPC, RR_LPC, RR_HPC,
                 TAC, TCC, TOC, EI99, CO2_Oil, CO2_NG, CO2_Ele,
                 d_LPC, d_HPC, Qr_LPC, Qr_HPC, Qc_LPC, Qc_HPC,
@@ -195,26 +201,26 @@ variables = [
     AspenVariable("QR_LPC", "\\Data\\Blocks\\LPC\\Output\\REB_DUTY"),
     AspenVariable("QR_HPC", "\\Data\\Blocks\\HPC\\Output\\REB_DUTY"),
     AspenVariable("P1_ELEC", "\\Data\\Blocks\\P1\\Output\\ELEC_POWER"),
-    AspenVariable("B2_ACN","\\Data\\Streams\\B2\\Output\\MOLEFRAC\\MIXED\\ACN"),
-    AspenVariable("D1_ACN","\\Data\\Streams\\D1\\Output\\MOLEFRAC\\MIXED\\ACN"),
-    AspenVariable("D2_ACN","\\Data\\Streams\\D2\\Output\\MOLEFRAC\\MIXED\\ACN")
+    AspenVariable("B2_ACN","\\Data\\Streams\\B2\\Output\\MASSFRAC\\MIXED\\ACN"),
+    AspenVariable("D1_ACN","\\Data\\Streams\\D1\\Output\\MASSFRAC\\MIXED\\ACN"),
+    AspenVariable("D2_ACN","\\Data\\Streams\\D2\\Output\\MASSFRAC\\MIXED\\ACN")
 ]
 
 try:
     simulation = AspenSimulation(simulation_file, variables)
     var = {
          "x":{
-              "RR_LPC": [0.2, 0.50, 1.5],
-              "RR_HPC": [0.2, 0.51, 1.5],
-              "P_LPC":  [0.3, 0.30, 1.5],
-              "P_HPC":  [2, 4, 4]
+              "RR_LPC": [0.2, 0.60, 1.0],
+              "RR_HPC": [0.2, 0.60, 1.0],
+              "P_LPC":  [0.3, 0.75, 1.2],
+              "P_HPC":  [2.5, 3.25, 4]
          },
          "y":{
-              "NT_LPC": [11, 17, 20],
-              "NT_HPC": [11, 16, 19],
-              "NF_F1": [2, 4, 9],
-              "NF_D1": [2, 4, 9],
-              "NF_D2": [2, 4, 9]
+              "NT_LPC": [10, 15, 20],
+              "NT_HPC": [12, 17, 22],
+              "NF_F1": [2, 5, 9],
+              "NF_D1": [2, 5, 9],
+              "NF_D2": [2, 5, 9]
          }
     }
     x0 = np.array([var["x"]["RR_LPC"][1], var["x"]["RR_HPC"][1], var["x"]["P_LPC"][1], var["x"]["P_HPC"][1]])
@@ -233,9 +239,9 @@ try:
 
     design_var = SimulatedAnnealingDesignVariable(x0, bndsx, y0, bndsy)
 
-    conf = SimulatedAnnealingConfiguration(steps=300,
+    conf = SimulatedAnnealingConfiguration(steps=50,
                                            mininum_temperature=1,
-                                           cooling_schedule=0.1)
+                                           cooling_schedule=0.025)
 
     optimizer = SimulatedAnnealing(conf)
 

@@ -39,18 +39,21 @@ class SimulatedAnnealing:
                 y2 = design_variable.generate_integer(y1, ratio)
                 f2 = self._object_func(x2, y2)
 
-                if f2 - f1 < 0.0:
+                dE = f2 - f1
+                if dE < 0.0:
                     [x1, y1, f1] = [x2, y2, f2]
                     if f2 < fotm:
                         [xotm, yotm, fotm] = [x2, y2, f2]
                 else:
-                    if np.random.rand() < np.exp(-self._conf.energy_level/self._temp):
+                    if np.random.rand() <= np.exp(-dE/(self._temp*self._conf.normal_factor)):
                         [x1, y1, f1] = [x2, y2, f2]
                 i += 1
                 iterations += 1
-                print(f"Function: {f1}\nContinuous: {x1}\nDiscrete: {y1}")
-                print(f"Temperature: {self._temp}\nIterations: {iterations}")
                 print()
+                print(f"Function: {f2} | {fotm}")
+                print(f"Continuous: {x2} | {xotm}")
+                print(f"Discrete: {y2} | {yotm}")
+                print(f"Temperature: {self._temp}\nIterations: {iterations}\nRatio: {ratio}")
             [x1, y1, f1] = [xotm, yotm, fotm]
             self._temp = (1 - self._conf.cooling_schedule)*self._temp
             if self._temp < self._conf.mininum_temperature:

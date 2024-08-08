@@ -61,3 +61,6 @@ class AspenSimulation:
         else:
             self.aspen.Reinit()
             return  False
+        
+    def reinit(self) -> None:
+        self.aspen.Reinit()

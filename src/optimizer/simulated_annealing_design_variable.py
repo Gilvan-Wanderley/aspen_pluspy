@@ -39,7 +39,7 @@ class SimulatedAnnealingDesignVariable:
             if ratio == 1:
                 x[i] = self._bndsx[i][0] + u*(self._bndsx[i][1] - self._bndsx[i][0])
             else:
-                f = ratio*self._range
+                f = ratio
                 lb = x0[i]*(1-f) if x0[i]*(1-f) > self._bndsx[i][0] else self._bndsx[i][0]
                 ub = x0[i]*(1+f) if x0[i]*(1+f) < self._bndsx[i][1] else self._bndsx[i][1]
                 x[i] = lb + u*(ub - lb)    
@@ -53,8 +53,8 @@ class SimulatedAnnealingDesignVariable:
             if ratio == 1:
                 y[i] = np.random.randint(self._bndsy[i][0], self._bndsy[i][1] + 1)
             else:
-                f = ratio*self._range
-                lb = y0[i]*(1-f) if y0[i]*(1-f) > self._bndsy[i][0] else self._bndsy[i][0]
-                ub = y0[i]*(1+f) if y0[i]*(1+f) < self._bndsy[i][1] else self._bndsy[i][1]
-                y[i] = np.random.randint(np.trunc(lb), np.trunc(ub) + 1) 
+                f = ratio*(self._bndsy[i][0] + self._bndsy[i][1])/2
+                lb = y0[i] - f if y0[i] - f > self._bndsy[i][0] else self._bndsy[i][0]
+                ub = y0[i] + f if y0[i] + f < self._bndsy[i][1] else self._bndsy[i][1]
+                y[i] = np.random.randint(np.trunc(lb), np.ceil(ub) + 1) 
         return y
